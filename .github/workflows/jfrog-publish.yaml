@@ -39,4 +39,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.JFROG_USER_WRITER }}/app:latest
+          tags: ${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ secrets.JFROG_USER_WRITER }}/app:latest
