@@ -44,6 +44,6 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           build-args: buildDate=$(date +'%Y-%m-%d')
           push: true
-          cache-from: type=registry,ref=${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.DOCKER_IMAGE }}:buildcache
-          cache-to: type=registry,ref=${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.DOCKER_IMAGE }}:buildcache,mode=max
-          tags: ${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.DOCKER_IMAGE }}:latest,${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.DOCKER_IMAGE }}:${{ steps.meta.outputs.tags }},${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.DOCKER_IMAGE }}:${{ github.run_id }}
+          cache-from: type=registry,ref=${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.DOCKER_IMAGE }}:buildcache
+          cache-to: type=registry,ref=${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.DOCKER_IMAGE }}:buildcache,mode=max
+          tags: ${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.DOCKER_IMAGE }}:latest,${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.DOCKER_IMAGE }}:${{ steps.meta.outputs.tags }},${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.DOCKER_IMAGE }}:${{ github.run_id }}
