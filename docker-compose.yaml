@@ -1,0 +1,44 @@
+version: '3.8'
+
+x-app: &default-svc
+  restart: always
+  networks:
+    - dev-net
+x-log: &log-driver
+  logging:
+    driver: "json-file"
+    options:
+      tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+services:
+
+  mongo:
+    image: mongo:latest
+    hostname: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+      MONGO_INITDB_DATABASE: testDB
+    ports:
+      - 27017:27017
+
+    healthcheck:
+      test: echo "db.stats().ok" | mongo mongo:27017/test --quiet # mongo --eval 'db.getCollectionnames()'
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    <<: [ *default-svc, *log-driver ]
+    labels:
+      org.label-schema.group: "monitoring"
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - db-data:/data/db
+
+
+volumes:
+  db-data:
+
+networks:
+  dev-net:
+    name: dev-net

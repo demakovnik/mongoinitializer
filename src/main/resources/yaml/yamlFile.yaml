@@ -1,0 +1,6 @@
+User:
+  name: Name
+  age: Integer
+Name:
+  firstName: String
+  lastName: String
