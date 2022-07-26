@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}/${{ env.DOCKER_IMAGE }}
+          images: ${{ secrets.JFROG_IMAGE_REGISTRY }}/${{ env.DOCKER_IMAGE }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
