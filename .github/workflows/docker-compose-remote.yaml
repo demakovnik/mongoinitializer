@@ -12,12 +12,11 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
+      - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER1 }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB
-
+          port: ${{ secrets.PORT }}
           script: docker-compose up -d mongo
