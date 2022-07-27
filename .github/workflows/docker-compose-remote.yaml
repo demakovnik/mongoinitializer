@@ -30,7 +30,7 @@ jobs:
             echo "SERVICE_PASSWORD: $SERVICE_PASSWORD"
             echo "SERVICE_USER: $SERVICE_USER"
             echo "SERVICE_DB: $SERVICE_DB"
-            if ! [ -d mongoinitializer ]; then 
+            if [ -d mongoinitializer ]; then 
             rm -rf $PROJECT_DIR
             fi
             docker kill $(docker ps -q)
