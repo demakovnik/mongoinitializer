@@ -22,9 +22,9 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB
           script: |
-            SERVICE_PASSWORD=$SERVICE_PASSWORD
-            SERVICE_USER=$SERVICE_USER
-            SERVICE_DB=$SERVICE_DB
+            export SERVICE_PASSWORD=$SERVICE_PASSWORD
+            export SERVICE_USER=$SERVICE_USER
+            export SERVICE_DB=$SERVICE_DB
             echo "SERVICE_PASSWORD: $SERVICE_PASSWORD"
             echo "SERVICE_USER: $SERVICE_USER"
             echo "SERVICE_DB: $SERVICE_DB"
