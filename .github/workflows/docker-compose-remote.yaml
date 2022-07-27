@@ -7,19 +7,17 @@ env:
   SERVICE_PASSWORD: balance
   SERVICE_USER: balance
   SERVICE_DB: balance
-
-
 jobs:
-  docker:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Server 1
-      - uses: actions/checkout@v2
-      - uses: chaplyk/docker-compose-remote-action@v1.1
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
         with:
-          ssh_host: ${{ secrets.SERVER1 }}
-          ssh_user: ${{ secrets.SSH_USERNAME }}
-          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          compose_file: docker-compose.yaml
-          pull: true
-          build: true
+          host: ${{ secrets.SERVER1 }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB
+
+          script: docker-compose up -d mongo
