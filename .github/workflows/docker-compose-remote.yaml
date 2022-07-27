@@ -3,7 +3,10 @@ name: remote deploy to Server 1
 on:
   workflow_dispatch:
 
-
+env:
+  SERVICE_PASSWORD: "balance"
+  SERVICE_USER: "balance"
+  SERVICE_DB: "balance"
 jobs:
   deploy:
     name: Deploy
@@ -11,17 +14,15 @@ jobs:
     steps:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
-        env:
-          SERVICE_PASSWORD: "balance"
-          SERVICE_USER: "balance"
-          SERVICE_DB: "balance"
         with:
           host: ${{ secrets.SERVER1 }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          envs: SERVICE_PASSWORD, SERVICE_USER, SERVICE_DB
           script: |
+            SERVICE_PASSWORD=$SERVICE_PASSWORD
+            SERVICE_USER=$SERVICE_USER
+            SERVICE_DB=$SERVICE_DB
             echo "SERVICE_PASSWORD: $SERVICE_PASSWORD"
             echo "SERVICE_USER: $SERVICE_USER"
             echo "SERVICE_DB: $SERVICE_DB"
