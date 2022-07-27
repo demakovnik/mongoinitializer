@@ -19,4 +19,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
+          envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB
           script: git clone https://github.com/demakovnik/mongoinitializer.git && cd mongoinitializer && docker-compose up -d mongo
