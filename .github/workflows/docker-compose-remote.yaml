@@ -1,19 +1,25 @@
-name: ci
+name: remote deploy to Server 1
 
 on:
   workflow_dispatch:
+
+env:
+  SERVICE_PASSWORD: balance
+  SERVICE_USER: balance
+  SERVICE_DB: balance
+
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      # need checkout before using docker-compose-remote-action
+      - name: Deploy to Server 1
       - uses: actions/checkout@v2
       - uses: chaplyk/docker-compose-remote-action@v1.1
         with:
-          ssh_host: 92.53.65.114
-          ssh_user: root
-          ssh_key: ${{ secrets.SSH_KEY }}
+          ssh_host: ${{ secrets.SERVER1 }}
+          ssh_user: ${{ secrets.SSH_USERNAME }}
+          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
           compose_file: docker-compose.yaml
           pull: true
           build: true
