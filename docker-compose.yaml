@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 x-app: &default-svc
   restart: always
@@ -11,33 +11,60 @@ x-log: &log-driver
       tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 services:
-
   mongo:
-    image: mongo:latest
+    image: mongo:5.0.9
     hostname: mongo
     container_name: mongo
+
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: toor
-      MONGO_INITDB_DATABASE: testDB
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      SERVICE_PASSWORD: ${SERVICE_PASSWORD}
+      SERVICE_USER: ${SERVICE_USER}
+      SERVICE_DB: ${SERVICE_DB}
+
+    volumes:
+      - db-data:/data/db
+    configs:
+      - source: mongo_config
+        target: /docker-entrypoint-initdb.d/mongo-init.sh
+
+    profiles:
+      - mongo
+      - kafkamng
+      - kafkafull
+      - full
     ports:
       - 27017:27017
-
     healthcheck:
       test: echo "db.stats().ok" | mongo mongo:27017/test --quiet # mongo --eval 'db.getCollectionnames()'
       interval: 10s
       timeout: 2s
       retries: 10
-    <<: [ *default-svc, *log-driver ]
     labels:
       org.label-schema.group: "monitoring"
-    volumes:
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-      - db-data:/data/db
+    <<: [*default-svc, *log-driver]
 
+configs:
+  loki_config:
+    file: ./infra/loki-config.yaml
+  promtail_config:
+    file: ./infra/promtail-config.yaml
+  datasource:
+    file: ./infra/datasource.yaml
+  prometheus:
+    file: ./infra/prometheus.yml
+  alertmanager:
+    file: ./infra/alertmanager-config.yml
+  prometheus-alerts:
+    file: ./infra/alert.rules
+  mongo_config:
+    file: ./infra/mongodb/mongo-init.sh
 
 volumes:
+  grafana:
   db-data:
+  prometheus_data:
 
 networks:
   dev-net:
