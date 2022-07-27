@@ -12,16 +12,17 @@ jobs:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         env:
-          SERVICE_PASSWORD: "balance"
-          SERVICE_USER: "balance"
-          SERVICE_DB: "balance"
+          SERVICE_PASSWORD: balance
+          SERVICE_USER: balance
+          SERVICE_DB: balance
           PROJECT_DIR: mongoinitializer
+          GIT_URL: https://github.com/demakovnik/mongoinitializer.git
         with:
           host: ${{ secrets.SERVER1 }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB,PROJECT_DIR
+          envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB,PROJECT_DIR,GIT_URL
           script: |
             export SERVICE_PASSWORD=$SERVICE_PASSWORD
             export SERVICE_USER=$SERVICE_USER
@@ -30,10 +31,10 @@ jobs:
             echo "SERVICE_PASSWORD: $SERVICE_PASSWORD"
             echo "SERVICE_USER: $SERVICE_USER"
             echo "SERVICE_DB: $SERVICE_DB"
-            if [ -d mongoinitializer ]; then 
+            if [ -d $PROJECT_DIR ]; then 
             rm -rf $PROJECT_DIR
             fi
             docker kill $(docker ps -q)
             docker rm -vf $(docker ps -a -q)
             docker rmi -f $(docker images -a -q)
-            git clone https://github.com/demakovnik/mongoinitializer.git && cd $PROJECT_DIR && docker-compose up -d mongo --build
+            git $GIT_URL && cd $PROJECT_DIR && docker-compose up -d mongo --build
