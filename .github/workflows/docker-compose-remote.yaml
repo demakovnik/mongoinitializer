@@ -22,5 +22,7 @@ jobs:
           port: ${{ secrets.PORT }}
           envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB
           script: |
-            echo "vars: $SERVICE_PASSWORD, $SERVICE_USER, $SERVICE_DB"
+            echo "SERVICE_PASSWORD: $SERVICE_PASSWORD"
+            echo "SERVICE_USER: $SERVICE_USER"
+            echo "SERVICE_DB: $SERVICE_DB"
             git clone https://github.com/demakovnik/mongoinitializer.git && cd mongoinitializer && docker-compose up -d mongo
