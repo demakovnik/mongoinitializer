@@ -20,7 +20,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          envs: SERVICE_PASSWORD,SERVICE_USER,SERVICE_DB
+          envs: SERVICE_PASSWORD, SERVICE_USER, SERVICE_DB
           script: |
             echo "SERVICE_PASSWORD: $SERVICE_PASSWORD"
             echo "SERVICE_USER: $SERVICE_USER"
